@@ -5,7 +5,7 @@ simulate_data <- function(seed = 5462, N = 1e3, m = 5, P = 5) {
   colnames(W) <- paste0("W", 1:P)
   
   g <- matrix(0, ncol = m, nrow = N)
-  g <- 1 + 10 * matrix(W[, 1], ncol = m, nrow = N, byrow = FALSE) * matrix(hospital_effect1, ncol = m, nrow = N, byrow = TRUE) - matrix(W[, 5], ncol = m, nrow = N, byrow = FALSE)
+  g <- 1 + 10 * matrix(W[, 1], ncol = m, nrow = N, byrow = FALSE) * matrix(hospital_effect1, ncol = m, nrow = N, byrow = TRUE) - 0.2 * matrix(W[, 2], ncol = m, nrow = N, byrow = FALSE) - 0.5 * matrix(W[, 5], ncol = m, nrow = N, byrow = FALSE)
 
   g <- g / rowSums(g)
   colnames(g) <- paste0("g", 1:m)
@@ -17,7 +17,7 @@ simulate_data <- function(seed = 5462, N = 1e3, m = 5, P = 5) {
     trt_indicator[, a] <- A == a
   }
   
-  Qbar <- plogis(2 * matrix(W[,1], ncol = m, nrow = N, byrow = FALSE) - matrix(W[, 2], ncol = m, nrow = N, byrow = FALSE) + matrix(2 * W[,5], ncol = m, nrow = N, byrow = FALSE) - matrix(2 * hospital_effect1, ncol = m, nrow = N, byrow = TRUE) )
+  Qbar <- plogis(2 * matrix(W[,1], ncol = m, nrow = N, byrow = FALSE) - matrix((W[, 2] - 0.5)^2, ncol = m, nrow = N, byrow = FALSE) + matrix(W[, 3] > 0.5, ncol =m, nrow = N, byrow = TRUE) + matrix(W[,5], ncol = m, nrow = N, byrow = FALSE) - matrix(2 * hospital_effect1, ncol = m, nrow = N, byrow = TRUE))
   colnames(Qbar) <- paste0("Qbar", 1:m)
   
   Qtilde <- rowSums(Qbar * g)
