@@ -1,4 +1,4 @@
-simulate_data <- function(seed = 5462, N = 1e3, m = 6, P = 5) {
+simulate_data <- function(seed = 5462, N = 1e3, m = 5, P = 5) {
   set.seed(seed)
   hospital_effect1 <- rbinom(m, 1, 0.5)
   #hospital_effect1 <- c(0, 1)
@@ -24,7 +24,7 @@ simulate_data <- function(seed = 5462, N = 1e3, m = 6, P = 5) {
     Qbar[, i] <- case_when(
       W[, 1] <= 0.5 & hospital_effect1[i] == 1 ~ 0.3,
       W[, 1]  > 0.7 & hospital_effect1[i] == 1 ~ 1,
-      W[, 1]  > 0.5 & hospital_effect1[i] == 1 ~ 3,
+      W[, 1]  > 0.5 & hospital_effect1[i] == 1 ~ 2,
       W[, 1] <= 0.5 & hospital_effect1[i] == 0 ~ 0.7,
       W[, 1]  > 0.7 & hospital_effect1[i] == 0 ~ 0.5,
       W[, 1]  > 0.5 & hospital_effect1[i] == 0 ~ 0
