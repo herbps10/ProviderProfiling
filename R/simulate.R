@@ -1,13 +1,13 @@
 simulate_data <- function(seed = 5462, N = 1e3, m = 6, P = 5) {
   set.seed(seed)
-  #hospital_effect1 <- rbinom(m, 1, 0.5)
-  hospital_effect1 <- c(0, 1)
+  hospital_effect1 <- rbinom(m, 1, 0.5)
+  #hospital_effect1 <- c(0, 1)
   W <- matrix(runif(N * P, 0, 1), ncol = P, nrow = N)
   colnames(W) <- paste0("W", 1:P)
   
   g <- matrix(0, ncol = m, nrow = N)
   g <- plogis(
-    matrix(ifelse(W[, 1] > 0.5, 1, -1), ncol = m, nrow = N, byrow = FALSE) * matrix(hospital_effect1 * 2 - 1, ncol = m, nrow = N, byrow = TRUE)
+    2 * matrix(ifelse(W[, 1] > 0.7, 1, -1), ncol = m, nrow = N, byrow = FALSE) * matrix(hospital_effect1 * 2 - 1, ncol = m, nrow = N, byrow = TRUE)
   )
   g <- g / rowSums(g)
   colnames(g) <- paste0("g", 1:m)
@@ -22,10 +22,12 @@ simulate_data <- function(seed = 5462, N = 1e3, m = 6, P = 5) {
   Qbar <- matrix(0, ncol = m, nrow = N)
   for(i in 1:m) {
     Qbar[, i] <- case_when(
-      W[, 1] <= 0.5 & hospital_effect1[i] == 1 ~ qlogis(0.1),
-      W[, 1]  > 0.5 & hospital_effect1[i] == 1 ~ qlogis(0.9),
-      W[, 1] <= 0.5 & hospital_effect1[i] == 0 ~ qlogis(0.8),
-      W[, 1]  > 0.5 & hospital_effect1[i] == 0 ~ qlogis(0.6)
+      W[, 1] <= 0.5 & hospital_effect1[i] == 1 ~ 0.3,
+      W[, 1]  > 0.7 & hospital_effect1[i] == 1 ~ 1,
+      W[, 1]  > 0.5 & hospital_effect1[i] == 1 ~ 3,
+      W[, 1] <= 0.5 & hospital_effect1[i] == 0 ~ 0.7,
+      W[, 1]  > 0.7 & hospital_effect1[i] == 0 ~ 0.5,
+      W[, 1]  > 0.5 & hospital_effect1[i] == 0 ~ 0
     )
   }
   colnames(Qbar) <- paste0("Qbar", 1:m)
