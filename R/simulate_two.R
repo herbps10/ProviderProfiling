@@ -17,7 +17,13 @@ simulate_data <- function(seed = 5462, N = 1e3, m = 5, P = 5) {
     trt_indicator[, a] <- A == a
   }
   
-  Qbar <- matrix(W[,1], ncol = m, nrow = N, byrow = FALSE) + matrix((W[, 2])^2, ncol = m, nrow = N, byrow = FALSE) + matrix(ifelse(W[, 3] > 0.3 & W[, 3] < 0.7, 1, 0), ncol = m, nrow = N, byrow = TRUE) + matrix(W[, 4] * W[,5], ncol = m, nrow = N, byrow = FALSE) - matrix(hospital_effect1, ncol = m, nrow = N, byrow = TRUE)
+  #Qbar <- matrix(W[,1], ncol = m, nrow = N, byrow = FALSE) + matrix((W[, 2])^2, ncol = m, nrow = N, byrow = FALSE) + matrix(ifelse(W[, 3] > 0.3 & W[, 3] < 0.7, 1, 0), ncol = m, nrow = N, byrow = FALSE) + matrix(W[, 4] * W[,5], ncol = m, nrow = N, byrow = FALSE) - matrix(hospital_effect1, ncol = m, nrow = N, byrow = TRUE)
+  Qbar <- matrix(W[, 1], ncol = m, nrow = N, byrow = FALSE) + 
+    matrix((W[, 2])^2, ncol = m, nrow = N, byrow = FALSE) +
+    matrix(ifelse(W[, 3] > 0.3 & W[, 3] < 0.7, 1, 0), ncol = m, nrow = N, byrow = FALSE) -
+    matrix(W[, 4] * W[,5], ncol = m, nrow = N, byrow = FALSE) - 
+    matrix(hospital_effect1, ncol = m, nrow = N, byrow = TRUE)
+  
   colnames(Qbar) <- paste0("Qbar", 1:m)
   
   Qtilde <- rowSums(Qbar * g)
