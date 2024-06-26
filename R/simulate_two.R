@@ -5,7 +5,7 @@ simulate_data <- function(seed = 5462, N = 1e3, m = 5, P = 5) {
   colnames(W) <- paste0("W", 1:P)
   
   g <- matrix(0, ncol = m, nrow = N)
-  g <- 1 + 10 * matrix(W[, 1], ncol = m, nrow = N, byrow = FALSE) * matrix(hospital_effect1, ncol = m, nrow = N, byrow = TRUE) + matrix(ifelse(W[, 2] > 0.4 & W[, 2] < 0.7, 1, 0), ncol = m, nrow = N, byrow = FALSE) - 0.5 * matrix(W[, 5], ncol = m, nrow = N, byrow = FALSE)
+  g <- 1 + 20 * matrix(ifelse(W[, 1] > 0.7, 1, ifelse(W[, 1] > 0.4, 1.5, 0)), ncol = m, nrow = N, byrow = FALSE) * matrix(hospital_effect1, ncol = m, nrow = N, byrow = TRUE) + matrix(ifelse(W[, 2] > 0.4 & W[, 2] < 0.7, 1, 0), ncol = m, nrow = N, byrow = FALSE) - 0.5 * matrix(W[, 5], ncol = m, nrow = N, byrow = FALSE)
 
   g <- g / rowSums(g)
   colnames(g) <- paste0("g", 1:m)
@@ -18,11 +18,11 @@ simulate_data <- function(seed = 5462, N = 1e3, m = 5, P = 5) {
   }
   
   #Qbar <- matrix(W[,1], ncol = m, nrow = N, byrow = FALSE) + matrix((W[, 2])^2, ncol = m, nrow = N, byrow = FALSE) + matrix(ifelse(W[, 3] > 0.3 & W[, 3] < 0.7, 1, 0), ncol = m, nrow = N, byrow = FALSE) + matrix(W[, 4] * W[,5], ncol = m, nrow = N, byrow = FALSE) - matrix(hospital_effect1, ncol = m, nrow = N, byrow = TRUE)
-  Qbar <- matrix(W[, 1], ncol = m, nrow = N, byrow = FALSE) + 
+  Qbar <- 2 + #matrix(W[, 1], ncol = m, nrow = N, byrow = FALSE) + 
     matrix((W[, 2])^2, ncol = m, nrow = N, byrow = FALSE) +
-    matrix(ifelse(W[, 3] > 0.3 & W[, 3] < 0.7, 1, 0), ncol = m, nrow = N, byrow = FALSE) -
-    matrix(W[, 4] * W[,5], ncol = m, nrow = N, byrow = FALSE) - 
-    matrix(hospital_effect1, ncol = m, nrow = N, byrow = TRUE)
+    matrix(ifelse(W[, 1] > 0.7, 1, ifelse(W[, 1] > 0.4, 3, 0)), ncol = m, nrow = N, byrow = FALSE) -
+    matrix((W[, 4] + 1) * W[,5], ncol = m, nrow = N, byrow = FALSE) - 
+    2 * matrix(ifelse(W[, 1] > 0.5, -1, 1), ncol = m, nrow = N) * matrix(hospital_effect1, ncol = m, nrow = N, byrow = TRUE)
   
   colnames(Qbar) <- paste0("Qbar", 1:m)
   
