@@ -27,6 +27,7 @@ indirect_glm <- function(data, outcome, trt, baseline) {
       glm_psi2 = map_dbl(a, \(trt_level) {
         mean(predict(fit, newdata = data[data[[trt]] == trt_level, ], type = "response"), na.rm = TRUE)
       }),
-      glm_smr = glm_psi1 / glm_psi2
+      glm_ER = glm_psi1 - glm_psi2,
+      glm_SMR = glm_psi1 / glm_psi2
     )
 }

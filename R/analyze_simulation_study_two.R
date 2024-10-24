@@ -69,7 +69,6 @@ table <- simulation_results %>%
   arrange(scenario, N)
 
 table_formatted <- table %>% 
-  filter(scenario == 1) %>%
   select(N, trt_method, parameter, mae, me, coverage, glm_me, glm_mae) %>% 
   mutate_at(vars(c(mae, me, glm_me, glm_mae)), scales::number_format(accuracy = 0.001)) %>% 
   mutate_at(vars(coverage), scales::percent_format(accuracy = 0.1)) %>% 
@@ -85,7 +84,7 @@ table_formatted_1 <- table_formatted %>%
 
 table_formatted_direct <- table_formatted %>%
   ungroup() %>%
-  select(N, me_direct, glm_me_direct, mae_direct, glm_mae_direct, coverage_direct) %>%
+  select(scenario, N, me_direct, glm_me_direct, mae_direct, glm_mae_direct, coverage_direct) %>%
   #pivot_longer(c(me_direct, glm_me_direct, mae_direct, glm_mae_direct, coverage_direct)) %>%
   #mutate(estimator = ifelse(str_detect(name, "glm"), "GLM", "TMLE"),
   #       metric = str_replace_all(name, "_direct", ""),

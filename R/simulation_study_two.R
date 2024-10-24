@@ -17,7 +17,7 @@ wrapper <- function(index, seed, N, m, estimator, trt_method, parameter, P, data
   }
 
   #correct_outcome <- list(list("ranger", num.trees = 500, max.depth = 3), list("ranger", num.trees = 200, max.depth = 3), list("ranger", num.trees = 100, max.depth = 3), list("ranger", num.trees = 50, max.depth = 3), list("lightgbm", num_iterations = 50), "glm", "mean", "gam")
-  correct_outcome <- list(list("ranger", num.trees = 500, max.depth = 5), "glm", "mean", "gam")
+  correct_outcome <- list(list("lightgbm", num_iterations = 200), list("lightgbm", num_iterations = 100), list("lightgbm", num_iterations = 50), list("lightgbm", num_iterations = 200), "glm", "gam")
 
   if(trt_method == "SuperRiesz") {
     correct_trt <- list(list("nn",
@@ -182,9 +182,9 @@ wrapper <- function(index, seed, N, m, estimator, trt_method, parameter, P, data
 N_simulations <- 1
 simulations <- expand_grid(
   index = as.numeric(Sys.getenv("SLURM_ARRAY_TASK_ID")),
-  m = 10,
+  m = 75,
   #N = c(5e3, 1e4, 1.5e4),
-  N = c(5e3, 1e4),
+  N = c(5e3, 1e4, 2e4),
   trt_method = "default",
   parameter = c("direct", "smr")
 ) 
