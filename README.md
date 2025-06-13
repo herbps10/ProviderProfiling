@@ -43,3 +43,17 @@ Then, to analyze the results and generate results tables, run
 ```{r}
 source("R/simulation_study_1/analyze_simulation_study.R")
 ```
+
+You can rerun both the simulation studies in their entirety as follows, although it will take quite some time; if you have access to a computing cluster we recommend using it!
+```{r}
+
+Sys.setenv(SIMULATION_CACHE_PATH = "/path/to/cache")
+Sys.setenv(SIMULATION_RESULTS_PATH = "/path/to/results")
+
+source("R/simulation_study_1/simulation_study.R")
+for(task_id %in% 1:500) {
+  Sys.setenv(SLURM_ARRAY_TASK_ID = task_id)
+  source("R/simulation_study_1/simulation_study.R")
+  source("R/simulation_study_2/simulation_study.R")
+}
+```
