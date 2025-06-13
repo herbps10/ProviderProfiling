@@ -1,10 +1,14 @@
-direct_glm <- function(data, outcome, trt, baseline) {
+direct_glm <- function(data, outcome, trt, baseline, outcome_type = "continuous") {
   trt_levels <- sort(unique(data[[trt]]))
   data[[trt]] <- factor(data[[trt]], levels = trt_levels)
   f <- as.formula(paste0(outcome, "~ ", trt, " + ", paste0(baseline, collapse = " + "), " + ", paste0(trt, "*", baseline, collapse = " +"))) 
-  #f <- as.formula(paste0(outcome, "~ ", trt, " + ", paste0(baseline, collapse = " + ")))
-  print(f)
-  fit <- glm(f, data = data)
+  if(outcome_type == "binomial") {
+    fit <- glm(f, data = data, family = binomial(link = "logit"))
+  }
+  else {
+    fit <- glm(f, data = data)
+  }
+  
   tibble(
     a = trt_levels
   ) %>%
@@ -15,10 +19,17 @@ direct_glm <- function(data, outcome, trt, baseline) {
     }))
 }
 
-indirect_glm <- function(data, outcome, trt, baseline) {
+indirect_glm <- function(data, outcome, trt, baseline, outcome_type = "continuous") {
   trt_levels <- sort(unique(data[[trt]]))
   f <- as.formula(paste0(outcome, "~ ", paste0(baseline, collapse = " + ")))
-  fit <- glm(f, data = data)
+
+  if(outcome_type == "binomial") {
+    fit <- glm(f, data = data, family = binomial(link = "logit"))
+  }
+  else {
+    fit <- glm(f, data = data)
+  }
+
   tibble(
     a = trt_levels
   ) %>%
