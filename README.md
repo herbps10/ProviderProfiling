@@ -3,7 +3,7 @@
 
 This repository includes the R code used for the two simulation studies in the paper _Doubly Robust Nonparametric Efficient Estimation for Healthcare Provider Evaluation_. 
 
-The simulations depend on the [`TargetedRisk`](https://github.com/herbps10/TargetedRisk). This package can be installed directly from Github:
+The simulations depend on the package [`TargetedRisk`](https://github.com/herbps10/TargetedRisk), which implements the statistical methods described in the paper. This package can be installed directly from Github:
 ```{r}
 remotes::install_github("herbps10/TargetedRisk")
 ```
